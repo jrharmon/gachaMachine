@@ -1,0 +1,575 @@
+/* =============================================
+   GACHA WORLD — Styles
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0d0a1e;
+  --purple:    #7c3aed;
+  --purple-lt: #a855f7;
+  --pink:      #e879f9;
+  --gold:      #fbbf24;
+  --text:      #e2d9f3;
+  --muted:     #9d8ec0;
+}
+
+/* ── Full-viewport, no scroll ─────────────── */
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+}
+
+/* ── Starfield ────────────────────────────── */
+.stars-bg {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 30%, #1a0a3e 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 70%, #0e1a3a 0%, transparent 55%),
+    var(--bg);
+}
+.stars-bg::before, .stars-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px   1px   at 10% 15%, rgba(255,255,255,.7)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 25% 60%, rgba(255,255,255,.5)  0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 25%, rgba(255,255,255,.8)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 55% 80%, rgba(255,255,255,.4)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 70% 10%, rgba(255,255,255,.6)  0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 45%, rgba(255,255,255,.7)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 92% 75%, rgba(255,255,255,.5)  0%, transparent 100%),
+    radial-gradient(1px   1px   at  5% 90%, rgba(255,255,255,.4)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 33% 88%, rgba(255,255,255,.6)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 75% 33%, rgba(255,255,255,.5)  0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 18% 55%, rgba(255,255,255,.7)  0%, transparent 100%),
+    radial-gradient(1px   1px   at 62% 68%, rgba(255,255,255,.4)  0%, transparent 100%);
+  animation: twinkle 4s infinite alternate ease-in-out;
+}
+.stars-bg::after { transform: scale(1.1) rotate(15deg); animation-delay: -2s; }
+@keyframes twinkle {
+  from { opacity: .6; } to { opacity: 1; }
+}
+
+/* ── App shell: fills viewport ────────────── */
+.app {
+  position: relative; z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Header ───────────────────────────────── */
+header {
+  text-align: center;
+  padding: 0.6rem 1rem 0.25rem;
+  flex-shrink: 0;
+}
+.title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  background: linear-gradient(135deg, #c084fc, #e879f9, #fbbf24);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 14px rgba(232,121,249,.5));
+}
+.subtitle {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* ── Main: two-column on wide, single-col on narrow ── */
+main {
+  flex: 1;
+  min-height: 0;          /* allow flex children to shrink */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  overflow: hidden;
+}
+
+/* ── Machine section ──────────────────────── */
+.machine-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem 1rem;
+  flex: 0 0 auto;          /* don't grow, size to content */
+}
+
+.machine-wrapper {
+  position: relative;
+  /* Height-driven: machine fills most of the viewport height */
+  height: min(78vh, calc(100vh - 180px));
+  width: auto;
+  aspect-ratio: 2 / 3;   /* matches SVG viewBox 280×420 */
+  flex-shrink: 0;
+}
+
+.machine-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter:
+    drop-shadow(0 0 24px rgba(168,85,247,.45))
+    drop-shadow(0 0 50px rgba(168,85,247,.15));
+  animation: machineBob 3s ease-in-out infinite;
+}
+@keyframes machineBob {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+/* ── Flying capsule ───────────────────────── */
+.flying-capsule {
+  position: absolute;
+  width: 56px;
+  /* Start position: tray of machine (≈83% down the SVG height) */
+  bottom: 17%;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  pointer-events: none;
+  z-index: 10;
+  display: none;           /* JS toggles display + animation class */
+}
+.flying-capsule.active { display: block; }
+.flying-capsule svg { width: 100%; height: auto; display: block; }
+
+@keyframes capsulePop {
+  0%   { transform: translateX(-50%) scale(0)    translateY(0);   opacity: 1; }
+  30%  { transform: translateX(-50%) scale(1.1)  translateY(-18px); opacity: 1; }
+  60%  { transform: translateX(-50%) scale(1.4)  translateY(-28px); opacity: 1; }
+  80%  { transform: translateX(-50%) scale(1.3)  translateY(-24px); opacity: 1; }
+  100% { transform: translateX(-50%) scale(0.8)  translateY(-20px); opacity: 0; }
+}
+.flying-capsule.animate {
+  animation: capsulePop 1.1s cubic-bezier(.34,1.4,.64,1) forwards;
+}
+
+/* ── PULL BUTTON ──────────────────────────── */
+.pull-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  /* Wide enough to be a clear CTA */
+  width: min(220px, 80vw);
+  padding: 0.85rem 1rem;
+  background: linear-gradient(135deg, #7c3aed, #db2777);
+  border: none;
+  border-radius: 50px;
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.3rem, 4vw, 1.9rem);
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: .05em;
+  box-shadow: 0 0 22px rgba(168,85,247,.55), 0 5px 18px rgba(0,0,0,.4);
+  transition: transform .15s, box-shadow .15s;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.pull-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,.18), transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.pull-btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 0 36px rgba(168,85,247,.75), 0 10px 28px rgba(0,0,0,.4);
+}
+.pull-btn:active:not(:disabled) {
+  transform: translateY(1px) scale(.97);
+}
+.pull-btn:disabled { opacity: .65; cursor: not-allowed; }
+.pull-btn.pulling .btn-icon {
+  animation: wiggle .35s ease-in-out infinite alternate;
+}
+@keyframes wiggle {
+  from { transform: rotate(-15deg); }
+  to   { transform: rotate(15deg); }
+}
+.btn-icon { font-size: 1.2em; line-height: 1; }
+
+/* ── Result modal ─────────────────────────── */
+.result-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(360px, 90vw);
+  animation: modalIn .28s cubic-bezier(.34,1.4,.64,1) forwards;
+}
+
+.result-close-btn {
+  position: absolute;
+  top: -0.6rem;
+  right: -0.6rem;
+  z-index: 2;
+  background: rgba(30, 10, 60, 0.95);
+  border: 1.5px solid rgba(168, 85, 247, .6);
+  color: var(--text);
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  font-size: .9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, color .2s;
+}
+.result-close-btn:hover {
+  background: rgba(124,58,237,.7);
+  color: #fff;
+}
+
+/* Result card */
+.result-card {
+  background: rgba(22,13,46,.92);
+  border: 2px solid var(--purple);
+  border-radius: 20px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  position: relative;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+.result-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+}
+.result-card.pop-in {
+  animation: popIn .45s cubic-bezier(.34,1.5,.64,1) forwards;
+}
+@keyframes popIn {
+  from { transform: scale(.55) rotate(-4deg); opacity: 0; }
+  to   { transform: scale(1)   rotate(0deg);  opacity: 1; }
+}
+
+.rarity-badge {
+  font-family: 'Fredoka One', cursive;
+  font-size: .85rem;
+  padding: .25rem 1.1rem;
+  border-radius: 50px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.item-image-wrap {
+  width: clamp(90px, 18vw, 130px);
+  height: clamp(90px, 18vw, 130px);
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(0,0,0,.3);
+  border: 2px solid rgba(255,255,255,.1);
+  flex-shrink: 0;
+}
+.item-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.item-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: var(--text);
+  text-align: center;
+}
+.item-desc {
+  font-size: clamp(.75rem, 1.8vw, .88rem);
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── Legendary sparkles ───────────────────── */
+.spark {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 20;
+  animation: sparkFly 1.2s ease-out forwards;
+}
+@keyframes sparkFly {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx),var(--dy)) scale(0); opacity: 0; }
+}
+
+/* ── Collection floating button ───────────── */
+.collection-btn {
+  position: fixed;
+  bottom: 1.2rem; right: 1.2rem;
+  z-index: 100;
+  display: flex; align-items: center; gap: .45rem;
+  padding: .65rem 1.1rem;
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  border: 1.5px solid var(--purple);
+  border-radius: 50px;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  font-size: .85rem; font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(124,58,237,.4), 0 4px 14px rgba(0,0,0,.5);
+  transition: transform .2s, box-shadow .2s;
+}
+.collection-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(124,58,237,.6), 0 8px 18px rgba(0,0,0,.5);
+}
+.count-badge {
+  background: var(--purple); color: #fff;
+  font-size: .7rem; font-weight: 800;
+  padding: .1rem .4rem;
+  border-radius: 50px; min-width: 1.3rem; text-align: center;
+}
+
+/* ── Modal ────────────────────────────────── */
+.modal {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal.hidden { display: none; }
+
+.modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(4px);
+}
+.modal-content {
+  position: relative; z-index: 1;
+  width: min(680px, 96vw);
+  max-height: 85vh;
+  display: flex; flex-direction: column;
+  background: rgba(16,10,35,.97);
+  border: 1.5px solid var(--purple);
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(124,58,237,.3);
+  overflow: hidden;
+  animation: modalIn .28s cubic-bezier(.34,1.4,.64,1) forwards;
+}
+@keyframes modalIn {
+  from { transform: scale(.87) translateY(16px); opacity: 0; }
+  to   { transform: scale(1)   translateY(0);    opacity: 1; }
+}
+#itemDetailModal { z-index: 300; }
+
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 1.4rem 0.85rem;
+  flex-shrink: 0;
+}
+
+/* ── Collection tabs ──────────────────────── */
+.modal-tabs {
+  display: flex;
+  padding: 0 1.4rem;
+  border-bottom: 1px solid rgba(124,58,237,.25);
+  flex-shrink: 0;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: .55rem 1.2rem;
+  color: var(--muted);
+  font-family: 'Nunito', sans-serif;
+  font-size: .88rem; font-weight: 700;
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active {
+  color: var(--purple-lt);
+  border-bottom-color: var(--purple-lt);
+}
+.modal-header h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.3rem; color: var(--text);
+}
+.modal-actions { display: flex; align-items: center; gap: .65rem; }
+
+.clear-btn {
+  background: rgba(220,38,38,.15);
+  border: 1px solid rgba(220,38,38,.4);
+  color: #f87171;
+  padding: .35rem .8rem;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: .78rem; font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+.clear-btn:hover { background: rgba(220,38,38,.3); }
+
+.close-btn {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: var(--muted);
+  width: 1.9rem; height: 1.9rem;
+  border-radius: 50%;
+  font-size: .85rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, color .2s;
+}
+.close-btn:hover { background: rgba(255,255,255,.18); color: #fff; }
+
+.collection-grid {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+.collection-grid.hidden { display: none; }
+
+.col-group-header {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  letter-spacing: .06em;
+  padding: 0.5rem 0 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  margin-bottom: 0.8rem;
+}
+.col-group-header:not(:first-child) {
+  margin-top: 1.4rem;
+}
+
+.col-rarity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: .75rem;
+}
+
+.col-card {
+  position: relative;
+  background: rgba(22,13,46,.8);
+  border: 1.5px solid var(--purple);
+  border-radius: 14px;
+  padding: .85rem .7rem;
+  display: flex; flex-direction: column; align-items: center; gap: .45rem;
+  transition: transform .2s;
+}
+.col-card:hover { transform: translateY(-3px); }
+.col-card-clickable { cursor: pointer; }
+.col-rarity {
+  font-size: .62rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .07em;
+}
+.col-card img {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.3);
+  object-fit: cover;
+}
+.col-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: .8rem; color: var(--text); text-align: center;
+}
+.item-detail-count {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: .1rem;
+}
+
+.col-card-missing {
+  cursor: default;
+  border-color: rgba(100,80,150,.3) !important;
+  box-shadow: none !important;
+}
+.col-card-missing:hover { transform: none; }
+.col-card-missing img {
+  filter: grayscale(1) blur(6px) brightness(0.35) contrast(1.2);
+}
+.col-mystery {
+  color: rgba(160,140,190,.4);
+  letter-spacing: .12em;
+}
+
+.col-own-count {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.45rem;
+  background: rgba(0,0,0,.65);
+  color: #fbbf24;
+  font-family: 'Fredoka One', cursive;
+  font-size: .72rem;
+  padding: .05rem .3rem;
+  border-radius: 50px;
+  line-height: 1.5;
+}
+
+.empty-collection {
+  padding: 3rem 2rem;
+  text-align: center; color: var(--muted); font-size: .9rem;
+}
+.empty-collection.hidden { display: none; }
+
+/* ── Scrollbar ────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(124,58,237,.5); border-radius: 3px; }
+
+/* ── Responsive: narrow screens stack vertically ── */
+@media (max-width: 600px) {
+  html, body { overflow: hidden; }
+
+  main {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    overflow-y: auto;        /* allow scroll only on very small phones */
+  }
+
+  .machine-section {
+    padding: 0.25rem 1rem 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .machine-wrapper {
+    height: auto;
+    width: min(180px, 55vw);
+    aspect-ratio: unset;
+  }
+
+  .result-section {
+    padding: 0 1rem 5rem;
+    justify-content: center;
+    min-height: auto;
+  }
+
+  .pull-btn {
+    font-size: 1.4rem;
+    width: min(200px, 78vw);
+  }
+
+  .result-card { padding: 1rem; }
+}
+
+/* Very short screens (landscape mobile) */
+@media (max-height: 500px) {
+  header { padding: 0.3rem 1rem; }
+  .title { font-size: 1.2rem; }
+  .subtitle { display: none; }
+  main { flex-direction: row; gap: 1rem; }
+  .machine-wrapper {
+    height: auto;
+    width: min(160px, 30vw);
+    aspect-ratio: unset;
+  }
+}

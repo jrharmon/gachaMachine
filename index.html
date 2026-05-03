@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gacha World</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="stars-bg"></div>
+
+  <div class="app">
+
+    <header>
+      <h1 class="title">✨ Gacha World ✨</h1>
+      <p class="subtitle">Pull your destiny!</p>
+    </header>
+
+    <main>
+
+      <!-- Machine + Button -->
+      <section class="machine-section">
+
+        <div class="machine-wrapper">
+          <svg id="gachaMachine" class="machine-svg"
+               viewBox="0 0 280 420" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3b0764"/>
+                <stop offset="100%" stop-color="#1e1b4b"/>
+              </linearGradient>
+              <linearGradient id="collarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#6d28d9"/>
+                <stop offset="100%" stop-color="#4c1d95"/>
+              </linearGradient>
+              <radialGradient id="domeGrad" cx="38%" cy="32%" r="58%">
+                <stop offset="0%"   stop-color="#ddd6fe" stop-opacity="0.55"/>
+                <stop offset="55%"  stop-color="#7c3aed" stop-opacity="0.28"/>
+                <stop offset="100%" stop-color="#2e1065" stop-opacity="0.85"/>
+              </radialGradient>
+              <radialGradient id="domeShine" cx="38%" cy="28%" r="42%">
+                <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="legGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4c1d95"/>
+                <stop offset="100%" stop-color="#6d28d9"/>
+              </linearGradient>
+              <linearGradient id="chuteGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#5b21b6"/>
+                <stop offset="100%" stop-color="#3b0764"/>
+              </linearGradient>
+              <linearGradient id="trayGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#5b21b6"/>
+                <stop offset="100%" stop-color="#2e1065"/>
+              </linearGradient>
+              <linearGradient id="panelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#2e1065"/>
+                <stop offset="100%" stop-color="#1a0a38"/>
+              </linearGradient>
+              <linearGradient id="cap1t" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fca5a5"/><stop offset="100%" stop-color="#ef4444"/></linearGradient>
+              <linearGradient id="cap1b" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fde68a"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient>
+              <linearGradient id="cap2t" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#86efac"/><stop offset="100%" stop-color="#16a34a"/></linearGradient>
+              <linearGradient id="cap2b" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#6ee7b7"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+              <linearGradient id="cap3t" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#2563eb"/></linearGradient>
+              <linearGradient id="cap3b" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a5f3fc"/><stop offset="100%" stop-color="#0891b2"/></linearGradient>
+              <linearGradient id="cap4t" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f9a8d4"/><stop offset="100%" stop-color="#db2777"/></linearGradient>
+              <linearGradient id="cap4b" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+              <linearGradient id="cap5t" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fcd34d"/><stop offset="100%" stop-color="#b45309"/></linearGradient>
+              <linearGradient id="cap5b" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fed7aa"/><stop offset="100%" stop-color="#ea580c"/></linearGradient>
+            </defs>
+
+            <!-- DOME -->
+            <ellipse cx="140" cy="168" rx="90" ry="13" fill="url(#collarGrad)" stroke="#a855f7" stroke-width="1.5"/>
+            <ellipse cx="140" cy="90"  rx="88" ry="82" fill="url(#domeGrad)"   stroke="#a855f7" stroke-width="2"/>
+            <ellipse cx="140" cy="90"  rx="88" ry="82" fill="url(#domeShine)"/>
+
+            <!-- CAPSULES inside dome (larger) -->
+            <!-- Row 1 bottom -->
+            <g transform="translate(69,125) rotate(-15)">
+              <rect x="0" y="0" width="33" height="21" rx="10" fill="url(#cap1t)"/>
+              <rect x="0" y="10" width="33" height="11" rx="10" fill="url(#cap1b)"/>
+              <line x1="0" y1="10" x2="33" y2="10" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="9" cy="5" rx="4.5" ry="3" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(103,133) rotate(5)">
+              <rect x="0" y="0" width="33" height="21" rx="10" fill="url(#cap2t)"/>
+              <rect x="0" y="10" width="33" height="11" rx="10" fill="url(#cap2b)"/>
+              <line x1="0" y1="10" x2="33" y2="10" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="9" cy="5" rx="4.5" ry="3" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(141,127) rotate(-8)">
+              <rect x="0" y="0" width="33" height="21" rx="10" fill="url(#cap3t)"/>
+              <rect x="0" y="10" width="33" height="11" rx="10" fill="url(#cap3b)"/>
+              <line x1="0" y1="10" x2="33" y2="10" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="9" cy="5" rx="4.5" ry="3" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(175,122) rotate(18)">
+              <rect x="0" y="0" width="33" height="21" rx="10" fill="url(#cap4t)"/>
+              <rect x="0" y="10" width="33" height="11" rx="10" fill="url(#cap4b)"/>
+              <line x1="0" y1="10" x2="33" y2="10" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="9" cy="5" rx="4.5" ry="3" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <!-- Row 2 -->
+            <g transform="translate(77,101) rotate(20)">
+              <rect x="0" y="0" width="33" height="21" rx="10" fill="url(#cap5t)"/>
+              <rect x="0" y="10" width="33" height="11" rx="10" fill="url(#cap5b)"/>
+              <line x1="0" y1="10" x2="33" y2="10" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="9" cy="5" rx="4.5" ry="3" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(113,105) rotate(-12)">
+              <rect x="0" y="0" width="33" height="21" rx="10" fill="url(#cap1t)"/>
+              <rect x="0" y="10" width="33" height="11" rx="10" fill="url(#cap1b)"/>
+              <line x1="0" y1="10" x2="33" y2="10" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="9" cy="5" rx="4.5" ry="3" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(150,103) rotate(10)">
+              <rect x="0" y="0" width="33" height="21" rx="10" fill="url(#cap2t)"/>
+              <rect x="0" y="10" width="33" height="11" rx="10" fill="url(#cap2b)"/>
+              <line x1="0" y1="10" x2="33" y2="10" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="9" cy="5" rx="4.5" ry="3" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <!-- Row 3 -->
+            <g transform="translate(91,77) rotate(-22)">
+              <rect x="0" y="0" width="30" height="19" rx="9" fill="url(#cap3t)"/>
+              <rect x="0" y="9" width="30" height="10" rx="9" fill="url(#cap3b)"/>
+              <line x1="0" y1="9" x2="30" y2="9" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="8" cy="4.5" rx="4" ry="2.5" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(125,71) rotate(9)">
+              <rect x="0" y="0" width="30" height="19" rx="9" fill="url(#cap4t)"/>
+              <rect x="0" y="9" width="30" height="10" rx="9" fill="url(#cap4b)"/>
+              <line x1="0" y1="9" x2="30" y2="9" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="8" cy="4.5" rx="4" ry="2.5" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(160,79) rotate(-5)">
+              <rect x="0" y="0" width="30" height="19" rx="9" fill="url(#cap5t)"/>
+              <rect x="0" y="9" width="30" height="10" rx="9" fill="url(#cap5b)"/>
+              <line x1="0" y1="9" x2="30" y2="9" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="8" cy="4.5" rx="4" ry="2.5" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <!-- Row 4 top -->
+            <g transform="translate(106,50) rotate(16)">
+              <rect x="0" y="0" width="27" height="17" rx="8" fill="url(#cap1t)"/>
+              <rect x="0" y="8" width="27" height="9" rx="8" fill="url(#cap1b)"/>
+              <line x1="0" y1="8" x2="27" y2="8" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="7" cy="4" rx="3.5" ry="2.5" fill="rgba(255,255,255,0.38)"/>
+            </g>
+            <g transform="translate(139,45) rotate(-19)">
+              <rect x="0" y="0" width="27" height="17" rx="8" fill="url(#cap2t)"/>
+              <rect x="0" y="8" width="27" height="9" rx="8" fill="url(#cap2b)"/>
+              <line x1="0" y1="8" x2="27" y2="8" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+              <ellipse cx="7" cy="4" rx="3.5" ry="2.5" fill="rgba(255,255,255,0.38)"/>
+            </g>
+
+            <!-- BODY -->
+            <rect x="50" y="168" width="180" height="185" rx="12" fill="url(#bodyGrad)" stroke="#7c3aed" stroke-width="2"/>
+            <!-- Chute neck -->
+            <rect x="116" y="178" width="48" height="26" rx="5" fill="url(#chuteGrad)" stroke="#6d28d9" stroke-width="1.5"/>
+            <!-- Panel -->
+            <rect x="68" y="210" width="144" height="100" rx="10" fill="url(#panelGrad)" stroke="#6d28d9" stroke-width="1.5"/>
+            <!-- Panel text -->
+            <text x="140" y="234" text-anchor="middle" font-family="'Trebuchet MS',sans-serif" font-size="11" font-weight="bold" fill="#e879f9" letter-spacing="1">GACHA WORLD</text>
+            <text x="100" y="258" font-size="9" fill="#fbbf24">★</text>
+            <text x="140" y="255" text-anchor="middle" font-size="9" fill="#fbbf24">✦</text>
+            <text x="180" y="258" font-size="9" fill="#fbbf24">★</text>
+            <!-- Coin slot -->
+            <rect x="110" y="264" width="60" height="10" rx="5" fill="#0f0829" stroke="#6d28d9" stroke-width="1.5"/>
+            <rect x="126" y="267" width="28" height="4" rx="2" fill="#2e1065"/>
+            <text x="140" y="288" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#7c3aed">INSERT COIN</text>
+            <!-- Tray -->
+            <path d="M88 318 Q140 328 192 318 L196 340 Q140 354 84 340 Z" fill="url(#trayGrad)" stroke="#6d28d9" stroke-width="1.5"/>
+            <rect x="95" y="340" width="90" height="12" rx="6" fill="#0f0829" stroke="#6d28d9" stroke-width="1.5"/>
+            <!-- Legs -->
+            <rect x="70" y="348" width="28" height="45" rx="5" fill="url(#legGrad)" stroke="#6d28d9" stroke-width="1.5"/>
+            <rect x="182" y="348" width="28" height="45" rx="5" fill="url(#legGrad)" stroke="#6d28d9" stroke-width="1.5"/>
+            <ellipse cx="84"  cy="393" rx="22" ry="7" fill="#3b0764"/>
+            <ellipse cx="196" cy="393" rx="22" ry="7" fill="#3b0764"/>
+            <!-- Bolts -->
+            <circle cx="62"  cy="178" r="4" fill="#5b21b6" stroke="#a855f7" stroke-width="1"/>
+            <circle cx="218" cy="178" r="4" fill="#5b21b6" stroke="#a855f7" stroke-width="1"/>
+            <circle cx="62"  cy="345" r="4" fill="#5b21b6" stroke="#a855f7" stroke-width="1"/>
+            <circle cx="218" cy="345" r="4" fill="#5b21b6" stroke="#a855f7" stroke-width="1"/>
+            <!-- Shadow -->
+            <ellipse cx="140" cy="400" rx="90" ry="9" fill="rgba(0,0,0,0.35)"/>
+          </svg>
+
+          <!-- Flying capsule element (hidden until pull) -->
+          <div id="flyingCapsule" class="flying-capsule" aria-hidden="true">
+            <svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="fcTop" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#e879f9"/>
+                  <stop offset="100%" stop-color="#a855f7"/>
+                </linearGradient>
+                <linearGradient id="fcBot" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#fbbf24"/>
+                  <stop offset="100%" stop-color="#f59e0b"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0"  width="60" height="18" rx="18" fill="url(#fcTop)"/>
+              <rect x="0" y="18" width="60" height="18" rx="18" fill="url(#fcBot)"/>
+              <line x1="0" y1="18" x2="60" y2="18" stroke="rgba(0,0,0,0.25)" stroke-width="1.5"/>
+              <ellipse cx="16" cy="9" rx="9" ry="5" fill="rgba(255,255,255,0.4)" transform="rotate(-15,16,9)"/>
+            </svg>
+          </div>
+        </div><!-- /.machine-wrapper -->
+
+        <button id="pullBtn" class="pull-btn">
+          <span class="btn-icon">🎰</span>
+          <span class="btn-text">PULL!</span>
+        </button>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Result modal -->
+  <div id="resultModal" class="modal hidden">
+    <div class="modal-backdrop" id="resultBackdrop"></div>
+    <div class="result-modal-content">
+      <button id="closeResult" class="result-close-btn">✕</button>
+      <div id="resultCard" class="result-card">
+        <div id="rarityBadge" class="rarity-badge"></div>
+        <div class="item-image-wrap">
+          <img id="itemImage" src="" alt="" />
+        </div>
+        <div id="itemName" class="item-name"></div>
+        <div id="itemDesc" class="item-desc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Item detail modal -->
+  <div id="itemDetailModal" class="modal hidden">
+    <div class="modal-backdrop" id="itemDetailBackdrop"></div>
+    <div class="result-modal-content">
+      <button id="closeItemDetail" class="result-close-btn">✕</button>
+      <div id="itemDetailCard" class="result-card">
+        <div id="itemDetailBadge" class="rarity-badge"></div>
+        <div class="item-image-wrap">
+          <img id="itemDetailImage" src="" alt="" />
+        </div>
+        <div id="itemDetailName" class="item-name"></div>
+        <div id="itemDetailDesc" class="item-desc"></div>
+        <div id="itemDetailCount" class="item-detail-count"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collection floating button -->
+  <button id="collectionBtn" class="collection-btn">
+    🏆 Collection <span id="collectionCount" class="count-badge">0</span>
+  </button>
+
+  <!-- Collection modal -->
+  <div id="collectionModal" class="modal hidden">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🏆 Your Collection</h2>
+        <div class="modal-actions">
+          <button id="clearBtn" class="clear-btn">🗑 Clear All</button>
+          <button id="closeModal" class="close-btn">✕</button>
+        </div>
+      </div>
+      <div class="modal-tabs">
+        <button class="tab-btn active" id="tabCollected">Collected</button>
+        <button class="tab-btn" id="tabMissing">Missing</button>
+      </div>
+      <div id="collectionGrid" class="collection-grid"></div>
+      <div id="missingGrid" class="collection-grid hidden"></div>
+      <div id="emptyCollection" class="empty-collection hidden">
+        <p>No items yet — pull the machine to start collecting!</p>
+      </div>
+      <div id="emptyMissing" class="empty-collection hidden">
+        <p>🎉 You've collected every item!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="items.js"></script>
+  <script src="gacha.js"></script>
+</body>
+</html>
