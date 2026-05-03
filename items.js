@@ -104,18 +104,18 @@ const RARITY_CONFIG = {
   "rare": {
     label: "Rare",
     weight: 6,
-    color: "#60a5fa",         // blue
-    glow: "rgba(96,165,250,0.7)",
-    border: "#3b82f6",
-    gradient: "linear-gradient(135deg, #1d4ed8, #1e3a8a)"
+    color: "#38bdf8",         // sky blue
+    glow: "rgba(56,189,248,0.7)",
+    border: "#0ea5e9",
+    gradient: "linear-gradient(135deg, #0369a1, #0c4a6e)"
   },
   "ultra-rare": {
     label: "Ultra Rare",
     weight: 3,
-    color: "#c084fc",         // purple
-    glow: "rgba(192,132,252,0.8)",
-    border: "#a855f7",
-    gradient: "linear-gradient(135deg, #7c3aed, #4c1d95)"
+    color: "#fb923c",         // orange
+    glow: "rgba(251,146,60,0.8)",
+    border: "#f97316",
+    gradient: "linear-gradient(135deg, #c2410c, #7c2d12)"
   },
   "legendary": {
     label: "✨ LEGENDARY ✨",

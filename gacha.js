@@ -140,25 +140,23 @@
 
   // ── Legendary effects ─────────────────────
   function triggerLegendary() {
-    // Sparkles on the card
-    const sparkColors = ['#fbbf24', '#f59e0b', '#fde68a', '#fff', '#c084fc'];
+    const sparkColors = ['#fbbf24', '#f59e0b', '#fde68a', '#fff', '#2dd4bf'];
     for (let i = 0; i < 30; i++) {
       const el = document.createElement('div');
       el.className = 'spark';
       el.style.cssText = [
-        'left:'              + (25 + Math.random() * 50) + '%',
-        'top:'               + (15 + Math.random() * 65) + '%',
-        'background:'        + sparkColors[Math.floor(Math.random() * sparkColors.length)],
-        'width:'             + (3 + Math.random() * 7) + 'px',
-        'height:'            + (3 + Math.random() * 7) + 'px',
-        'animation-delay:'   + (Math.random() * 0.5) + 's',
-        '--dx:'              + ((Math.random() - 0.5) * 130) + 'px',
-        '--dy:'              + ((Math.random() - 0.5) * 130) + 'px'
+        'left:'            + (25 + Math.random() * 50) + '%',
+        'top:'             + (15 + Math.random() * 65) + '%',
+        'background:'      + sparkColors[Math.floor(Math.random() * sparkColors.length)],
+        'width:'           + (3 + Math.random() * 7) + 'px',
+        'height:'          + (3 + Math.random() * 7) + 'px',
+        'animation-delay:' + (Math.random() * 0.5) + 's',
+        '--dx:'            + ((Math.random() - 0.5) * 130) + 'px',
+        '--dy:'            + ((Math.random() - 0.5) * 130) + 'px'
       ].join(';');
       resultCard.appendChild(el);
       setTimeout(function () { el.remove(); }, 1600);
     }
-
     triggerConfetti();
     playLegendarySound();
   }
@@ -171,7 +169,7 @@
     canvas.height = window.innerHeight;
     var ctx = canvas.getContext('2d');
 
-    var colors = ['#fbbf24','#f59e0b','#fde68a','#e879f9','#a855f7','#c084fc','#93c5fd','#fff','#86efac','#f9a8d4'];
+    var colors = ['#fcd34d','#f59e0b','#2dd4bf','#0d9488','#38bdf8','#fff','#86efac','#fb923c','#fbbf24'];
     var pieces = [];
 
     // Launch from both bottom corners
