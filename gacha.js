@@ -31,6 +31,7 @@
     col.push({
       id: item.id, name: item.name, rarity: item.rarity,
       image: item.image, description: item.description,
+      type: item.type,
       pulledAt: Date.now()
     });
     saveCollection(col);
@@ -51,16 +52,18 @@
   const resultBackdrop   = document.getElementById('resultBackdrop');
   const closeResultBtn   = document.getElementById('closeResult');
   const resultCard       = document.getElementById('resultCard');
+  const itemTypeBadge    = document.getElementById('itemTypeBadge');
   const flyingCapsule    = document.getElementById('flyingCapsule');
   const rarityBadge      = document.getElementById('rarityBadge');
   const itemImage        = document.getElementById('itemImage');
   const itemName         = document.getElementById('itemName');
   const itemDesc         = document.getElementById('itemDesc');
-  const itemDetailModal   = document.getElementById('itemDetailModal');
-  const itemDetailBackdrop= document.getElementById('itemDetailBackdrop');
-  const closeItemDetailBtn= document.getElementById('closeItemDetail');
-  const itemDetailCard    = document.getElementById('itemDetailCard');
-  const itemDetailBadge   = document.getElementById('itemDetailBadge');
+  const itemDetailModal      = document.getElementById('itemDetailModal');
+  const itemDetailBackdrop   = document.getElementById('itemDetailBackdrop');
+  const closeItemDetailBtn   = document.getElementById('closeItemDetail');
+  const itemDetailCard       = document.getElementById('itemDetailCard');
+  const itemDetailBadge      = document.getElementById('itemDetailBadge');
+  const itemDetailTypeBadge  = document.getElementById('itemDetailTypeBadge');
   const itemDetailImage   = document.getElementById('itemDetailImage');
   const itemDetailName    = document.getElementById('itemDetailName');
   const itemDetailDesc    = document.getElementById('itemDetailDesc');
@@ -108,6 +111,12 @@
       flyingCapsule.classList.remove('active', 'animate');
 
       // Populate card
+      var typeCfg = TYPE_CONFIG[item.type] || Object.values(TYPE_CONFIG)[0];
+      itemTypeBadge.innerHTML        = typeCfg.icon + typeCfg.label;
+      itemTypeBadge.style.background = typeCfg.bg;
+      itemTypeBadge.style.color      = typeCfg.color;
+      itemTypeBadge.title            = typeCfg.label;
+
       rarityBadge.textContent        = cfg.label;
       rarityBadge.style.background   = cfg.gradient;
       rarityBadge.style.color        = cfg.color;
@@ -140,7 +149,7 @@
 
   // ── Legendary effects ─────────────────────
   function triggerLegendary() {
-    const sparkColors = ['#fbbf24', '#f59e0b', '#fde68a', '#fff', '#2dd4bf'];
+    const sparkColors = ['#f43f5e', '#fbbf24', '#a78bfa', '#fff', '#34d399', '#38bdf8'];
     for (let i = 0; i < 30; i++) {
       const el = document.createElement('div');
       el.className = 'spark';
@@ -169,7 +178,7 @@
     canvas.height = window.innerHeight;
     var ctx = canvas.getContext('2d');
 
-    var colors = ['#fcd34d','#f59e0b','#2dd4bf','#0d9488','#38bdf8','#fff','#86efac','#fb923c','#fbbf24'];
+    var colors = ['#f43f5e','#fbbf24','#38bdf8','#34d399','#a78bfa','#fff','#fb923c','#fb7185','#fcd34d'];
     var pieces = [];
 
     // Launch from both bottom corners
@@ -277,6 +286,13 @@
   // ── Item detail modal ──────────────────────
   function showItemDetail(entry, count) {
     var cfg = RARITY_CONFIG[entry.rarity] || RARITY_CONFIG['common'];
+    var entryType = entry.type || (ITEMS.find(function(i) { return i.id === entry.id; }) || {}).type;
+    var typeCfg = TYPE_CONFIG[entryType] || Object.values(TYPE_CONFIG)[0];
+
+    itemDetailTypeBadge.innerHTML        = typeCfg.icon + typeCfg.label;
+    itemDetailTypeBadge.style.background = typeCfg.bg;
+    itemDetailTypeBadge.style.color      = typeCfg.color;
+    itemDetailTypeBadge.title            = typeCfg.label;
 
     itemDetailBadge.textContent     = cfg.label;
     itemDetailBadge.style.background  = cfg.gradient;
@@ -386,35 +402,48 @@
       byId[entry.id] = entry;
     });
 
-    // Group unique items by rarity
+    const typeOrder   = Object.keys(TYPE_CONFIG);
     const rarityOrder = ['common', 'rare', 'ultra-rare', 'legendary'];
-    const groups = { legendary: [], 'ultra-rare': [], rare: [], common: [] };
+
+    // Group unique items by type, sort within each type by rarity
+    const typeGroups = {};
+    typeOrder.forEach(function (t) { typeGroups[t] = []; });
     Object.values(byId).forEach(function (entry) {
-      (groups[entry.rarity] || groups['common']).push(entry);
+      var t = entry.type || (ITEMS.find(function(i) { return i.id === entry.id; }) || {}).type || typeOrder[0];
+      if (typeGroups[t]) typeGroups[t].push(entry);
+      else typeGroups[typeOrder[0]].push(entry);
     });
 
-    // Render each non-empty rarity group
-    rarityOrder.forEach(function (rarity) {
-      const items = groups[rarity];
+    typeOrder.forEach(function (type) {
+      const items = typeGroups[type];
       if (items.length === 0) return;
 
-      const cfg = RARITY_CONFIG[rarity] || RARITY_CONFIG['common'];
+      items.sort(function (a, b) {
+        return rarityOrder.indexOf(a.rarity) - rarityOrder.indexOf(b.rarity);
+      });
+
+      const typeCfg = TYPE_CONFIG[type];
 
       const header = document.createElement('div');
       header.className = 'col-group-header';
-      header.style.color = cfg.color;
-      header.textContent = cfg.label;
+      header.style.color = typeCfg.color;
+      header.style.borderBottomColor = typeCfg.border;
+      header.innerHTML =
+        '<span class="col-type-header-icon" style="color:' + typeCfg.color + '">' + typeCfg.icon + '</span>' +
+        typeCfg.label;
       collectionGrid.appendChild(header);
 
       const grid = document.createElement('div');
       grid.className = 'col-rarity-grid';
       items.forEach(function (entry) {
-        const count = counts[entry.id];
-        const card = document.createElement('div');
+        const count  = counts[entry.id];
+        const cfg    = RARITY_CONFIG[entry.rarity] || RARITY_CONFIG['common'];
+        const card   = document.createElement('div');
         card.className = 'col-card col-card-clickable';
         card.style.borderColor = cfg.border;
         card.style.boxShadow   = '0 0 10px ' + cfg.glow + '55';
         card.innerHTML =
+          '<div class="col-type-icon" style="background:' + typeCfg.bg + ';color:' + typeCfg.color + '" title="' + typeCfg.label + '">' + typeCfg.icon + '</div>' +
           (count > 1 ? '<div class="col-own-count">×' + count + '</div>' : '') +
           '<div class="col-rarity" style="color:' + cfg.color + '">' + cfg.label + '</div>' +
           '<img src="' + entry.image + '" alt="' + entry.name + '" />' +
@@ -443,22 +472,34 @@
     }
     missingGrid.classList.remove('hidden');
 
+    var typeOrder   = Object.keys(TYPE_CONFIG);
     var rarityOrder = ['common', 'rare', 'ultra-rare', 'legendary'];
-    var groups = { legendary: [], 'ultra-rare': [], rare: [], common: [] };
+
+    var typeGroups = {};
+    typeOrder.forEach(function (t) { typeGroups[t] = []; });
     missing.forEach(function (item) {
-      (groups[item.rarity] || groups['common']).push(item);
+      var t = item.type || typeOrder[0];
+      if (typeGroups[t]) typeGroups[t].push(item);
+      else typeGroups[typeOrder[0]].push(item);
     });
 
-    rarityOrder.forEach(function (rarity) {
-      var items = groups[rarity];
+    typeOrder.forEach(function (type) {
+      var items = typeGroups[type];
       if (items.length === 0) return;
 
-      var cfg = RARITY_CONFIG[rarity] || RARITY_CONFIG['common'];
+      items.sort(function (a, b) {
+        return rarityOrder.indexOf(a.rarity) - rarityOrder.indexOf(b.rarity);
+      });
+
+      var typeCfg = TYPE_CONFIG[type];
 
       var header = document.createElement('div');
       header.className = 'col-group-header';
-      header.style.color = cfg.color;
-      header.textContent = cfg.label;
+      header.style.color = typeCfg.color;
+      header.style.borderBottomColor = typeCfg.border;
+      header.innerHTML =
+        '<span class="col-type-header-icon" style="color:' + typeCfg.color + '">' + typeCfg.icon + '</span>' +
+        typeCfg.label;
       missingGrid.appendChild(header);
 
       var grid = document.createElement('div');
